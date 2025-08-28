@@ -156,8 +156,8 @@ npm -v   # ≥ 10.x
 
 ```bash
 # Clone and install
-git clone <your-repository-url>
-cd soulspeak && npm install
+git clone https://github.com/xmadmaxdx/soulspeakAI.git
+cd soulspeakAI && npm install
 
 # Environment setup
 cp .env.example .env  # Configure your variables
@@ -187,7 +187,7 @@ VITE_SUPABASE_URL=your_supabase_project_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 # Security
-ENCRYPTION_KEY=your_secure_32_byte_encryption_key
+ENCRYPTION_KEY=your_secure_32_byte_encryption_key # Optional
 ```
 
 </details>
