@@ -20,11 +20,10 @@
 
 ---
 
-## **Hackathon Showcase**
+## **Why This Project Stands Out**
 
 **SoulSpeak** is a comprehensive mental health platform that demonstrates advanced full-stack development skills, AI integration, and user-centric design. Built for individuals seeking emotional support through intelligent AI conversations, mood tracking, and personalized insights.
 
-### **Why This Project Stands Out**
 
 ```mermaid
 graph TD
