@@ -148,6 +148,7 @@ export default function Journal() {
     setError(null);
     setIsAnimating(true);
 
+
     try {
       const requestData: JournalEntryRequest = {
         content: entry,
@@ -155,7 +156,9 @@ export default function Journal() {
         email: user?.email || "demo@soulspeak.com",
         userName:
           user?.user_metadata?.name || user?.email?.split("@")[0] || "User",
+        generateAIResponse: true,
       };
+
 
       const response = await fetch("/api/journal/entries", {
         method: "POST",
