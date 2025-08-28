@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 25% 97%;
+    --foreground: 215 25% 15%;
+
+    --card: 220 25% 98%;
+    --card-foreground: 215 25% 15%;
+
+    --popover: 220 25% 98%;
+    --popover-foreground: 215 25% 15%;
+
+    --primary: 215 35% 25%;
+    --primary-foreground: 220 25% 97%;
+
+    --secondary: 210 30% 92%;
+    --secondary-foreground: 215 35% 25%;
+
+    --muted: 210 30% 92%;
+    --muted-foreground: 215 20% 45%;
+
+    --accent: 175 40% 85%;
+    --accent-foreground: 175 40% 15%;
+
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 220 25% 97%;
+
+    --border: 210 25% 88%;
+    --input: 210 25% 90%;
+    --ring: 175 40% 45%;
+
+    --radius: 0.75rem;
+
+    /* SoulSpeak healing colors */
+    --soul-deep: 215 35% 25%;
+    --soul-warm: 35 45% 65%;
+    --soul-light: 220 25% 97%;
+    --soul-glow: 280 30% 75%;
+    --soul-mist: 200 20% 90%;
+
+    --healing-sage: 145 25% 70%;
+    --healing-lavender: 270 35% 80%;
+    --healing-ocean: 200 40% 70%;
+    --healing-sunset: 20 55% 75%;
+    --healing-moonlight: 220 15% 85%;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 215 25% 8%;
+    --foreground: 220 25% 92%;
+
+    --card: 215 25% 10%;
+    --card-foreground: 220 25% 92%;
+
+    --popover: 215 25% 10%;
+    --popover-foreground: 220 25% 92%;
+
+    --primary: 175 40% 65%;
+    --primary-foreground: 215 25% 8%;
+
+    --secondary: 215 20% 18%;
+    --secondary-foreground: 220 25% 92%;
+
+    --muted: 215 20% 18%;
+    --muted-foreground: 220 15% 65%;
+
+    --accent: 270 30% 40%;
+    --accent-foreground: 220 25% 92%;
+
+    --destructive: 0 55% 45%;
+    --destructive-foreground: 220 25% 92%;
+
+    --border: 215 20% 20%;
+    --input: 215 20% 20%;
+    --ring: 175 40% 65%;
+
+    /* SoulSpeak dark healing colors */
+    --soul-deep: 215 25% 8%;
+    --soul-warm: 35 35% 45%;
+    --soul-light: 220 25% 92%;
+    --soul-glow: 280 40% 60%;
+    --soul-mist: 200 15% 25%;
+
+    --healing-sage: 145 20% 40%;
+    --healing-lavender: 270 30% 50%;
+    --healing-ocean: 200 35% 45%;
+    --healing-sunset: 20 45% 55%;
+    --healing-moonlight: 220 15% 30%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    overflow-x: hidden;
+  }
+
+  html {
+    overflow-x: hidden;
+  }
+
+  .overflow-x-hidden {
+    overflow-x: hidden !important;
+  }
+
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 640px) {
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    div {
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
+    }
+
+    button,
+    .card {
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+  }
+}
