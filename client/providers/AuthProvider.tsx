@@ -44,22 +44,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const createTestUser = () => {
-    const testUser = {
-      id: "test-user-id",
-      email: "madmaxsecondac@gmail.com", 
-      user_metadata: {
-        username: "madmax",
-      },
-      created_at: new Date().toISOString(),
-      aud: "authenticated",
-      role: "authenticated",
-    } as User;
-
-    console.log("🔧 Development mode: Using test user for authentication");
-    return testUser;
-  };
-
   useEffect(() => {
     const getSession = async () => {
       try {
@@ -75,14 +59,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             session.user.email,
           );
         } else {
-          const testUser = createTestUser();
-          setUser(testUser);
-          console.log("🔧 Using development test user");
+          setSession(null);
+          setUser(null);
+          console.log("ℹ️ No active session - user needs to log in");
         }
       } catch (error) {
-        console.warn("⚠️ Supabase auth failed, using test user:", error);
-        const testUser = createTestUser();
-        setUser(testUser);
+        console.warn("⚠️ Supabase auth failed:", error);
+        setSession(null);
+        setUser(null);
       }
       setLoading(false);
     };
@@ -100,12 +84,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       } else {
         setSession(null);
+        setUser(null);
         if (event === "SIGNED_OUT") {
           console.log("📤 User signed out");
-          setUser(null);
-        } else if (!user && event !== "SIGNED_OUT") {
-          const testUser = createTestUser();
-          setUser(testUser);
         }
       }
       setLoading(false);
