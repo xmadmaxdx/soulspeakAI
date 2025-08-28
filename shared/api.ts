@@ -4,6 +4,7 @@ export interface JournalEntryRequest {
   email: string;
   userName?: string;
   tags?: string[];
+  generateAIResponse?: boolean;
 }
 
 export interface JournalEntryResponse {
