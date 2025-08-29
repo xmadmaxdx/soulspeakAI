@@ -211,11 +211,11 @@ ENCRYPTION_KEY=your_secure_32_byte_encryption_key # Optional
 
 ```mermaid
 flowchart LR
-  A[React Client (Vite SPA)] -->|API| B[Express API (Netlify Functions)]
-  A <-->|Auth| S[Supabase (Client-side)]
-  B -->|DB| D[Neon PostgreSQL (SSL pool 20)]
-  B <-->|AI| G[Google Gemini]
-  B -.->|Encrypt| E[AES-256-GCM]
+  Client[React - Vite SPA] --> API[Express API - Netlify Functions]
+  Client --- Supabase[Supabase - client-side]
+  API --> DB[Neon PostgreSQL - SSL pool 20]
+  API --> AI[Google Gemini]
+  API -.-> Crypto[AES-256-GCM]
 ```
 
 ### **Database Schema**
