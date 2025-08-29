@@ -62,7 +62,7 @@ graph TD
 
 ### **Intelligent Journaling**
 
-- **Private journaling** with optional AI responses
+- **Private journaling** with AI responses
 - **AES-256-GCM encryption** for maximum security
 - **Mood integration** with each entry
 - **Tagging system** for easy organization
@@ -107,7 +107,7 @@ graph TD
 | **Vite**           | `6.2.2`  | Lightning-fast build tool and dev server          |
 | **TailwindCSS**    | `3.4.11` | Utility-first styling with custom healing palette |
 | **Framer Motion**  | `12.6.2` | Smooth animations and transitions                 |
-| **Radix UI**       | `Latest` | Accessible component primitives                   |
+| **Radix UI**       | `1.x`    | Accessible component primitives                   |
 | **React Router**   | `6.26.2` | Client-side routing                               |
 | **TanStack Query** | `5.56.2` | Server state management                           |
 
@@ -154,15 +154,14 @@ npm -v   # ≥ 10.x
 ### **Quick Setup**
 
 ```bash
-# Clone and install
-git clone https://github.com/xmadmaxdx/soulspeakAI.git
-cd soulspeakAI && npm install
+# Install dependencies
+npm install
 
 # Environment setup
-cp .env.example .env  # Configure your variables
+# Create a .env file and set variables (see Environment Variables section)
 
-# Start development
-npm run dev  # Launches on http://localhost:8080
+# Start development (http://localhost:8080)
+npm run dev
 ```
 
 ### **Environment Variables**
@@ -210,17 +209,17 @@ ENCRYPTION_KEY=your_secure_32_byte_encryption_key # Optional
 
 ### **System Architecture**
 
-```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   React Client  │───▶│  Express API     │───▶│ Neon PostgreSQL │
-│   (Vite SPA)    │    │ (Netlify Funcs)  │    │   (SSL Pool)    │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-         │                       │                       │
-         ▼                       ▼                       ▼
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│ Supabase Auth   │    │  Google Gemini   │    │ AES Encryption  │
-│ (Client-side)   │    │   (4-key Rotate) │    │   (256-GCM)     │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
+```mermaid
+flowchart LR
+  A[React Client (Vite SPA)] -->|/api/*| B[Express API (Netlify Functions)]
+  A <-->|Auth| S[Supabase (Client-side)]
+  B -->|SSL + Pool (max 20)| D[Neon PostgreSQL]
+  B <-->|4-key rotation<br/>rate limit 10/5m, 50/h| G[Google Gemini 1.5 Flash]
+  B -.-> E[Encryption Utility (AES-256-GCM)]
+  subgraph Netlify
+    N[CDN + Redirects /api/*] --> A
+    N --> B
+  end
 ```
 
 ### **Database Schema**
@@ -234,9 +233,11 @@ CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email VARCHAR(255) UNIQUE NOT NULL,
     username VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255),
     bio TEXT DEFAULT 'Ready to begin my healing journey.',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    last_active TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     is_verified BOOLEAN DEFAULT false
 );
 
@@ -280,7 +281,7 @@ CREATE TABLE mood_entries (
 
 | Method | Endpoint                   | Description          | Features             |
 | ------ | -------------------------- | -------------------- | -------------------- |
-| `POST` | `/api/journal/entries`     | Create journal entry | Optional AI response |
+| `POST` | `/api/journal/entries`     | Create journal entry | AI response          |
 | `GET`  | `/api/journal/entries`     | List user entries    | Pagination support   |
 | `GET`  | `/api/journal/entries/:id` | Get specific entry   | User validation      |
 
@@ -288,7 +289,7 @@ CREATE TABLE mood_entries (
 
 | Method | Endpoint              | Description         | Features             |
 | ------ | --------------------- | ------------------- | -------------------- |
-| `POST` | `/api/mood/entries`   | Create mood entry   | Optional AI insights |
+| `POST` | `/api/mood/entries`   | Create mood entry   | No AI processing     |
 | `GET`  | `/api/mood/data`      | Get mood analytics  | AI-powered insights  |
 | `GET`  | `/api/mood/data/fast` | Quick mood overview | No AI processing     |
 
@@ -339,7 +340,7 @@ const apiKeys = [
 ```typescript
 // AES-256-GCM with authentication tags
 const ALGORITHM = "aes-256-gcm";
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "secure_fallback_key";
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "soulspeak_healing_encryption_key_32";
 
 // Format: iv:authTag:ciphertext (hex encoded)
 // Ensures data integrity and confidentiality
@@ -394,7 +395,7 @@ Perfect for hackathon demos without using AI quotas:
 | `/api/test/verify`          | System verification   | Service status overview |
 | `/api/test/journal/entries` | Mock journal creation | Simulated responses     |
 | `/api/test/companion/chat`  | Mock AI chat          | Test conversation       |
-| `/api/test/cleanup`         | Database cleanup      | Removes test data       |
+| `DELETE /api/test/cleanup`  | Database cleanup      | Removes test data       |
 
 ### **Health Monitoring**
 
@@ -421,7 +422,6 @@ GET /api/health
 **Advanced Analytics**
 
 - Detailed mood pattern analysis with visual charts
-- Weekly and monthly progress reports
 - Correlation analysis between journal content and mood trends
 - Exportable data reports for healthcare professionals
 
@@ -450,15 +450,15 @@ GET /api/health
 
 ---
 
-## 🏆 **Technical Achievements**
+## **Technical Achievements**
 
 
 | Feature                  | Implementation                  | Impact                             |
 | ------------------------ | ------------------------------- | ---------------------------------- |
-| **AI Reliability**       | 4-key rotation + backup service | 99.9% uptime guarantee             |
+| **AI Reliability**       | 4-key rotation + backup service | High availability under quota limits |
 | **Data Security**        | AES-256-GCM encryption          | Military-grade protection          |
-| **Performance**          | Connection pooling + caching    | Sub-200ms response times           |
-| **Scalability**          | Serverless + CDN                | Handles unlimited concurrent users |
+| **Performance**          | Connection pooling + caching    | Fast responses under typical load  |
+| **Scalability**          | Serverless + CDN                | Horizontally scalable via serverless + CDN |
 | **Developer Experience** | TypeScript + Vite + HMR         | Lightning-fast development         |
 
 ---
@@ -482,6 +482,5 @@ GET /api/health
 
 _Demonstrating the intersection of cutting-edge technology and human empathy_
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/your-repo/soulspeak)
 
 </div>
